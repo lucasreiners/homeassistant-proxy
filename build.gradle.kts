@@ -3,6 +3,9 @@ plugins {
     kotlin("plugin.spring") version "1.9.25"
     id("org.springframework.boot") version "3.4.1"
     id("io.spring.dependency-management") version "1.1.7"
+
+    id("org.jmailen.kotlinter") version "5.0.1"
+    id("com.bmuschko.docker-spring-boot-application") version "9.4.0"
 }
 
 group = "de.lr"
@@ -31,9 +34,13 @@ dependencies {
     implementation("io.github.openfeign:feign-jackson:13.5")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.2")
 
+    testImplementation("io.mockk:mockk:1.13.14")
+    testImplementation("com.ninja-squad:springmockk:4.0.2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    testImplementation("io.kotest:kotest-assertions-core:5.9.1")
+    // testImplementation("org.mock-server:mockserver-junit-jupiter-no-dependencies:5.14.0")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
@@ -51,4 +58,13 @@ kotlin {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+docker {
+    springBootApplication {
+        baseImage.set("ghcr.io/graalvm/jdk-community:21")
+        images.set(
+            listOf("ghcr.io/lucasreiners/homeassistant-proxy:latest"),
+        )
+    }
 }
