@@ -1,0 +1,10 @@
+spring:
+    application:
+        name: homeassistant-proxy
+
+homeassistant:
+    shares:
+        -   name: "Garagentor"
+            apiKey: "abcd1234"
+            allowedEntities:
+                - cover.garage_door
